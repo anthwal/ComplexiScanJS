@@ -1,0 +1,22 @@
+{
+  "name": "compexiscanjs",
+  "version": "1.0.0",
+  "main": "src/analyze.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/tokenize.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@typescript-eslint/utils": "^8.23.0",
+    "eslint": "^9.19.0",
+    "globals": "^15.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.23.0"
+  }
+}
