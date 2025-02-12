@@ -1,3 +1,4 @@
 node_modules
-analyze.js
-analyze.ts
+dist
+analyzer.ts
+tokenize.js
