@@ -33,7 +33,7 @@ function analyzeFunctions(
 
     if (token.type === TokenType.Function || token.type === TokenType.Arrow) {
       const name = getFunctionName(tokens, i);
-      currentFunction = { name, complexity: 0, threshold }; // Initialize to 0
+      currentFunction = { name, complexity: 0, threshold };
       functions.push(currentFunction);
     }
 
@@ -53,10 +53,19 @@ function analyzeFunctions(
     if (currentFunction) {
       const complexityIncrement = calculateTokenComplexity(token);
       if (complexityIncrement > 0) {
-        currentFunction.complexity += complexityIncrement + currentNestingLevel;
-        if (isNestingToken(token)) {
-          nestingStack.push(currentNestingLevel);
-          currentNestingLevel += 1;
+        if (
+          token.type === TokenType.LogicalAnd ||
+          token.type === TokenType.LogicalOr ||
+          token.type === TokenType.Else ||
+          token.type === TokenType.ElseIf
+        ) {
+          currentFunction.complexity += 1;
+        } else {
+          currentFunction.complexity += 1 + currentNestingLevel;
+          if (isNestingToken(token)) {
+            nestingStack.push(currentNestingLevel);
+            currentNestingLevel += 1;
+          }
         }
       }
     }
@@ -64,16 +73,6 @@ function analyzeFunctions(
 
   return functions;
 }
-
-function getFunctionName(tokens: Token[], index: number): string {
-  for (let i = index + 1; i < tokens.length; i++) {
-    if (tokens[i].type === TokenType.Identifier) {
-      return tokens[i].value;
-    }
-  }
-  return "<anonymous>";
-}
-
 function calculateTokenComplexity(token: Token): number {
   switch (token.type) {
     case TokenType.If:
@@ -84,6 +83,8 @@ function calculateTokenComplexity(token: Token): number {
     case TokenType.Catch:
     case TokenType.LogicalAnd:
     case TokenType.LogicalOr:
+    case TokenType.Else:
+    case TokenType.ElseIf:
       return 1;
     default:
       return 0;
@@ -100,3 +101,11 @@ function isNestingToken(token: Token): boolean {
   ].includes(token.type);
 }
 
+function getFunctionName(tokens: Token[], index: number): string {
+  for (let i = index + 1; i < tokens.length; i++) {
+    if (tokens[i].type === TokenType.Identifier) {
+      return tokens[i].value;
+    }
+  }
+  return "<anonymous>";
+}

@@ -7,10 +7,12 @@ export enum TokenType {
   RightBrace = "RightBrace",
   If = "If",
   Else = "Else",
+  ElseIf = "ElseIf",
   While = "While",
   For = "For",
   ForIn = "ForIn",
   ForOf = "ForOf",
+  Map = "Map",
   Do = "Do",
   Switch = "Switch",
   Case = "Case",
@@ -50,7 +52,7 @@ export class Tokenizer {
       const char = this.source[this.position];
 
       if (this.isWhitespace(char)) {
-        if (char === "\n") this.line++; // Update line number on new line
+        if (char === "\n") this.line++;
         this.position++;
         continue;
       }
@@ -151,4 +153,3 @@ export class Tokenizer {
     return /[0-9]/.test(char);
   }
 }
-
