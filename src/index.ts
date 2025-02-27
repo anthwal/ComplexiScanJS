@@ -1,7 +1,7 @@
-import { Tokenizer } from "./tokenizer";
 import { readFileSync, existsSync, statSync } from "fs";
 import { isValidSyntax } from "./check-valid-syntax";
 import { isValidFile } from "./check-valid-file";
+import { analyze } from "./analyzer";
 
 function main() {
   const args = process.argv.slice(2);
@@ -41,11 +41,15 @@ function main() {
   }
 
   // Tokenize the content
-  const tokenizer = new Tokenizer(source);
-  const tokens = tokenizer.tokenize();
+  // const tokenizer = new Tokenizer(source);
+  // const tokens = tokenizer.tokenize();
+  // console.log(`✅ File: ${filePath}`);
+  // console.log("🔹 Tokenized Output:", tokens);
 
-  console.log(`✅ File: ${filePath}`);
-  console.log("🔹 Tokenized Output:", tokens);
+  const analyzer = analyze(filePath, 15);
+
+  console.log("Testing Complexity", analyzer);
 }
 
 main();
+
