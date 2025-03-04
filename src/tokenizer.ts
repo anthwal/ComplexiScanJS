@@ -109,6 +109,7 @@ export class Tokenizer {
       function: TokenType.Function,
       if: TokenType.If,
       else: TokenType.Else,
+      "else if": TokenType.ElseIf,
       while: TokenType.While,
       for: TokenType.For,
       do: TokenType.Do,
