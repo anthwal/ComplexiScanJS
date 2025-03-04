@@ -1,4 +1,3 @@
-// src/analyzer.ts
 import { readFileSync } from "fs";
 import { Tokenizer, TokenType, Token } from "./tokenizer";
 
@@ -55,11 +54,18 @@ function analyzeFunctions(
       if (complexityIncrement > 0) {
         if (
           token.type === TokenType.LogicalAnd ||
-          token.type === TokenType.LogicalOr ||
+          token.type === TokenType.LogicalOr
+        ) {
+          currentFunction.complexity += 1;
+        } else if (
           token.type === TokenType.Else ||
           token.type === TokenType.ElseIf
         ) {
           currentFunction.complexity += 1;
+          if (isNestingToken(token)) {
+            nestingStack.push(currentNestingLevel);
+            currentNestingLevel += 1;
+          }
         } else {
           currentFunction.complexity += 1 + currentNestingLevel;
           if (isNestingToken(token)) {
@@ -73,6 +79,7 @@ function analyzeFunctions(
 
   return functions;
 }
+
 function calculateTokenComplexity(token: Token): number {
   switch (token.type) {
     case TokenType.If:
@@ -98,6 +105,8 @@ function isNestingToken(token: Token): boolean {
     TokenType.For,
     TokenType.Do,
     TokenType.Case,
+    TokenType.Else,
+    TokenType.ElseIf,
   ].includes(token.type);
 }
 
